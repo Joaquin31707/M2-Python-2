@@ -1,0 +1,60 @@
+import discord
+from discord.ext import commands
+import os
+import random
+import requests
+from duck import get_duck_image_url
+from dog import get_dog_image_url
+
+intents = discord.Intents.default()
+intents.message_content = True
+
+bot = commands.Bot(command_prefix='!', intents=intents)
+
+
+@bot.event
+async def on_ready():       
+    print(f'We have logged in as {bot.user}')
+
+
+@bot.command()
+async def hello(ctx):
+    await ctx.send(f'Hola, soy un bot {bot.user}!')
+
+
+@bot.command()
+async def heh(ctx, count_heh = 5):
+    await ctx.send("he" * count_heh)
+
+
+@bot.command()
+async def add(ctx, left: int, right: int):
+    await ctx.send(left + right)
+
+
+@bot.command()
+async def mem(ctx, categoria="random"):
+    img_image = random.choice(os.listdir(f'images/{categoria}'))
+    with open(f'images/{categoria}/{img_image}', 'rb') as f:
+        picture = discord.File(f)
+
+    await ctx.send(file=picture)
+
+
+def get_dog_image_url():
+    response = requests.get("https://dog.ceo/api/breeds/image/random")
+    data = response.json()
+    return data["message"]
+
+
+@bot.command()
+async def animals(ctx):
+    animal = random.choice(["duck", "dog"])
+
+    if animal == "duck":
+        await ctx.send(get_duck_image_url())
+    else:
+        await ctx.send(get_dog_image_url())
+
+
+bot.run("TU CÓDIGO VA ACÁ")
