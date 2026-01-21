@@ -1,0 +1,52 @@
+import discord
+from discord.ext import commands
+import os
+import random
+import requests
+
+intents = discord.Intents.default()
+intents.message_content = True
+
+bot = commands.Bot(command_prefix='!', intents=intents)
+
+@bot.event
+async def on_ready():       
+    print(f'We have logged in as {bot.user}')
+
+@bot.command()
+async def hola(ctx):
+    await ctx.send(f'Hola, soy un bot {bot.user}!, te voy a enseñar a como cuidar a nuestro medio ambiente. Por favor, escoge el tipo de contaminación que quieres aprender a reducir: !aire, !agua, !tierra')
+
+@bot.command()
+async def aire(ctx):
+    await ctx.send("El aire es uno de los medios más importantes para nosotros ya que sin él, no podríamos vivir. Para reducir este tipo de contaminación. Puedes utilizar medios de transporte tales como la bicicleta o caminar en lugar de utilizar un automóvil el cual emite gases tóxicos al aire.")
+    with open('contaminacion/aire.jpg', 'rb') as f:
+        picture = discord.File(f)
+
+        await ctx.send(file=picture)
+
+@bot.command()
+async def agua(ctx):
+    await ctx.send("El agua es un revurso vital para poder estar hidratados todo el tiempo. Para reducir este tipo de contaminación, puedes evitar tirar basura en los ríos, mares o lagos ya que esto afecta al agua y a los animales que viven ahí, lo cual provoca que el agua no sea potable y tenga germenes adentro de ella al tomarlo.")
+    with open('contaminacion/agua.jpg', 'rb') as f:
+        picture = discord.File(f)
+
+        await ctx.send(file=picture)
+
+@bot.command()
+async def tierra(ctx):
+    await ctx.send("La tierra es el medio en cual se siembran los alimentos que consumimos todos los días los cuales nos proporcionan la nutrición necesaria para poder vivir. Para reducir este tipo de contaminación, puedes separar los residuos orgánicos de los inorgánicos y así poder reciclar y reutilizar materiales que no utilizamos.")
+    with open('contaminacion/tierra.jpg', 'rb') as f:
+        picture = discord.File(f)
+
+        await ctx.send(file=picture)
+
+@bot.command()
+async def objetivo(ctx):
+    await ctx.send("El objetivo de este bot es enseñar a los adolescentes a como ayudar a nuestro medio ambiente ya que en la actualidad mucha gente no sabe como cuidarlo y solo lo contamina más cada día, es por eso que queremos que la humanidad sea más consciente y ayude a que la tierra sea un mejor lugar para vivir.")
+    
+@bot.command()
+async def ayuda(ctx):
+    await ctx.send(f'Los comandos disponibles son: !hola, !ayuda, !aire, !agua, !tierra, !objetivo')
+
+bot.run("TU CÓDIGO VA ACÁ")
